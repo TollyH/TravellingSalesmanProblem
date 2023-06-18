@@ -7,8 +7,8 @@ namespace TravellingSalesmanProblem
     public class Solver
     {
         public List<Vector2> Cities { get; private set; }
-        public IEnumerable<int> LastTriedPath { get; private set; }
-        public IEnumerable<int> CurrentBestPath { get; private set; }
+        public List<int> LastTriedPath { get; private set; }
+        public List<int> CurrentBestPath { get; private set; }
         public float CurrentBestDistance { get; private set; } = float.PositiveInfinity;
 
         public Solver(IEnumerable<Vector2> cities)
@@ -20,7 +20,7 @@ namespace TravellingSalesmanProblem
             CurrentBestPath = new List<int>();
         }
 
-        public IEnumerable<int> CalculateBestPath()
+        public List<int> CalculateBestPath()
         {
             IEnumerable<int> cityIndices = Enumerable.Range(1, Cities.Count);
 
@@ -30,12 +30,13 @@ namespace TravellingSalesmanProblem
                 // however it should be included in the final path result
                 IEnumerable<int> fullPath = path.Prepend(0);
                 fullPath = fullPath.Append(0);
+                List<int> pathList = fullPath.ToList();
 
-                LastTriedPath = fullPath;
-                float distance = CalculatePathDistance(fullPath);
+                LastTriedPath = pathList;
+                float distance = CalculatePathDistance(pathList);
                 if (distance < CurrentBestDistance)
                 {
-                    CurrentBestPath = fullPath;
+                    CurrentBestPath = pathList;
                     CurrentBestDistance = distance;
                 }
             }
@@ -43,7 +44,7 @@ namespace TravellingSalesmanProblem
             return CurrentBestPath;
         }
 
-        private float CalculatePathDistance(IEnumerable<int> cityPath)
+        private float CalculatePathDistance(IList<int> cityPath)
         {
             List<Vector2> pathList = cityPath.Select(i => Cities[i]).ToList();
             float distance = 0;
