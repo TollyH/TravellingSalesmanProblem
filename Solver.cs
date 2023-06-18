@@ -22,7 +22,7 @@ namespace TravellingSalesmanProblem
 
         public List<int> CalculateBestPath()
         {
-            IEnumerable<int> cityIndices = Enumerable.Range(1, Cities.Count);
+            IEnumerable<int> cityIndices = Enumerable.Range(1, Cities.Count - 1);
 
             foreach (IEnumerable<int> path in cityIndices.IteratePermutations())
             {
