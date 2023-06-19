@@ -93,7 +93,7 @@ namespace TravellingSalesmanProblem
                         Y1 = city.Y,
                         X2 = nextCity.X,
                         Y2 = nextCity.Y,
-                        Stroke = Brushes.Black
+                        Stroke = solverThread.IsAlive ? Brushes.Black : Brushes.Green
                     });
                 }
             }
