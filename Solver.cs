@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 
 namespace TravellingSalesmanProblem
 {
@@ -20,12 +21,16 @@ namespace TravellingSalesmanProblem
             CurrentBestPath = new List<int>();
         }
 
-        public List<int> CalculateBestPath()
+        public List<int> CalculateBestPath(CancellationToken cancellationToken)
         {
             IEnumerable<int> cityIndices = Enumerable.Range(1, Cities.Count - 1);
 
             foreach (IEnumerable<int> path in cityIndices.IteratePermutations())
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 // Starting/ending city is not included in permutations as it is always first and last,
                 // however it should be included in the final path result
                 IEnumerable<int> fullPath = path.Prepend(0);

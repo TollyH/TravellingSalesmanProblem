@@ -24,6 +24,8 @@ namespace TravellingSalesmanProblem
         private readonly System.Timers.Timer canvasUpdateTimer;
         private Thread? solverThread;
 
+        private CancellationTokenSource? cancellationTokenSource;
+
         public MainWindow()
         {
             Random rng = new();
@@ -88,8 +90,10 @@ namespace TravellingSalesmanProblem
         {
             tspSolver = new(Cities);
 
+            cancellationTokenSource?.Cancel();
             // Run TSP solver in background thread, with UI polling occasionally
-            solverThread = new(() => tspSolver.CalculateBestPath());
+            cancellationTokenSource = new CancellationTokenSource();
+            solverThread = new(() => tspSolver.CalculateBestPath(cancellationTokenSource.Token));
             solverThread.Start();
         }
     }
