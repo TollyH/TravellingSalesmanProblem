@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
 using System.Timers;
@@ -27,6 +28,8 @@ namespace TravellingSalesmanProblem
 
         private int permutationCount;
 
+        private Stopwatch stopwatch = Stopwatch.StartNew();
+
         public MainWindow()
         {
             Random rng = new();
@@ -47,12 +50,14 @@ namespace TravellingSalesmanProblem
 
         private void CanvasUpdateTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            stopwatch.Stop();
             Dispatcher.Invoke(() =>
             {
                 canvasUpdateTimer.Interval = frameDelaySlider.Value;
                 UpdateCanvas();
                 UpdateStats();
             });
+            stopwatch = Stopwatch.StartNew();
         }
 
         public void UpdateCanvas()
@@ -97,7 +102,8 @@ namespace TravellingSalesmanProblem
         public void UpdateStats()
         {
             int triedPaths = tspSolver?.TriedPaths ?? 0;
-            statsLabel.Content = $"Tried Paths: {triedPaths}/{permutationCount} ({(float)triedPaths / permutationCount * 100:0.0}%)";
+            statsLabel.Text = $"Tried Paths: {triedPaths}/{permutationCount} ({(float)triedPaths / permutationCount * 100:0.0}%)" +
+                $"\nDisplay Frame Delay: {stopwatch.Elapsed.TotalMilliseconds:0.00}ms ({1 / stopwatch.Elapsed.TotalSeconds:0.0} FPS)";
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
