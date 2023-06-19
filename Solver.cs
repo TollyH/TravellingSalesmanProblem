@@ -12,6 +12,8 @@ namespace TravellingSalesmanProblem
         public List<int> CurrentBestPath { get; private set; }
         public float CurrentBestDistance { get; private set; } = float.PositiveInfinity;
 
+        public int TriedPaths { get; private set; } = 0;
+
         public Solver(IEnumerable<Vector2> cities)
         {
             // Create a copy of the list given as a parameter
@@ -38,6 +40,7 @@ namespace TravellingSalesmanProblem
                 List<int> pathList = fullPath.ToList();
 
                 LastTriedPath = pathList;
+                TriedPaths++;
                 float distance = CalculatePathDistance(pathList);
                 if (distance < CurrentBestDistance)
                 {

@@ -26,5 +26,10 @@ namespace TravellingSalesmanProblem
                 }
             }
         }
+
+        public static int PermutationsCount(int length)
+        {
+            return length == 0 ? 0 : Enumerable.Range(1, length - 1).Aggregate(1, (acc, val) => acc * val);
+        }
     }
 }

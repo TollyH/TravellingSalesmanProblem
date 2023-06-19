@@ -26,14 +26,17 @@ namespace TravellingSalesmanProblem
 
         private CancellationTokenSource? cancellationTokenSource;
 
+        private int permutationCount;
+
         public MainWindow()
         {
             Random rng = new();
             Cities.Clear();
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 12; i++)
             {
                 Cities.Add(new Vector2(rng.Next(0, 400), rng.Next(0, 400)));
             }
+            permutationCount = Permutations.PermutationsCount(Cities.Count);
 
             canvasUpdateTimer = new System.Timers.Timer(FrameDelay);
             canvasUpdateTimer.Elapsed += CanvasUpdateTimer_Elapsed;
@@ -44,7 +47,11 @@ namespace TravellingSalesmanProblem
 
         private void CanvasUpdateTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            Dispatcher.Invoke(UpdateCanvas);
+            Dispatcher.Invoke(() =>
+            {
+                UpdateCanvas();
+                UpdateStats();
+            });
         }
 
         public void UpdateCanvas()
@@ -84,6 +91,12 @@ namespace TravellingSalesmanProblem
                     });
                 }
             }
+        }
+
+        public void UpdateStats()
+        {
+            int triedPaths = tspSolver?.TriedPaths ?? 0;
+            statsLabel.Content = $"Tried Paths: {triedPaths}/{permutationCount} ({(float)triedPaths / permutationCount * 100:0.0}%)";
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)

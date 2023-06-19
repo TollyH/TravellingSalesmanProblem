@@ -14,7 +14,8 @@
         <Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray">
             <Canvas Width="450" Height="450" x:Name="cityCanvas"/>
         </Border>
-        <Button Grid.Column="1" Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="startButton" Content="Start" Margin="10" Click="startButton_Click"/>
-        <Button Grid.Column="1" Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="stopButton" Content="Stop" Margin="10,40,10,10" Click="stopButton_Click"/>
+        <Button Grid.Column="1" Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="startButton" Content="Start" Margin="10" Click="startButton_Click"/>
+        <Button Grid.Column="1" Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="stopButton" Content="Stop" Margin="10,40,10,10" Click="stopButton_Click"/>
+        <Label x:Name="statsLabel" Grid.Column="1" VerticalAlignment="Top" Content="Tried Paths: XXXXXX/XXXXXX (XXX.X%)" Margin="0,70,0,0"/>
     </Grid>
 </Window>
