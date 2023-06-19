@@ -18,29 +18,26 @@ namespace TravellingSalesmanProblem
         public float CityDiameter { get; set; } = 10;
         public double FrameDelay { get; set; } = 16.67;
 
-        private readonly Solver tspSolver;
+        public List<Vector2> Cities { get; set; } = new();
+
+        private Solver? tspSolver;
         private readonly System.Timers.Timer canvasUpdateTimer;
-        private readonly Thread solverThread;
+        private Thread? solverThread;
 
         public MainWindow()
         {
             Random rng = new();
-            List<Vector2> randomCities = new(11);
+            Cities.Clear();
             for (int i = 0; i < 11; i++)
             {
-                randomCities.Add(new Vector2(rng.Next(0, 400), rng.Next(0, 400)));
+                Cities.Add(new Vector2(rng.Next(0, 400), rng.Next(0, 400)));
             }
 
-            tspSolver = new(randomCities);
             canvasUpdateTimer = new System.Timers.Timer(FrameDelay);
             canvasUpdateTimer.Elapsed += CanvasUpdateTimer_Elapsed;
 
             InitializeComponent();
             canvasUpdateTimer.Start();
-
-            // Run TSP solver in background thread, with UI polling occasionally
-            solverThread = new(() => tspSolver.CalculateBestPath());
-            solverThread.Start();
         }
 
         private void CanvasUpdateTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -52,12 +49,8 @@ namespace TravellingSalesmanProblem
         {
             cityCanvas.Children.Clear();
 
-            List<int> pathToDraw = solverThread.IsAlive ? tspSolver.LastTriedPath : tspSolver.CurrentBestPath;
-
-            for (int i = 0; i < pathToDraw.Count; i++)
+            foreach (Vector2 city in Cities)
             {
-                Vector2 city = tspSolver.Cities[pathToDraw[i]];
-
                 Ellipse cityEllipse = new()
                 {
                     Width = CityDiameter,
@@ -67,9 +60,15 @@ namespace TravellingSalesmanProblem
                 _ = cityCanvas.Children.Add(cityEllipse);
                 Canvas.SetLeft(cityEllipse, city.X - (CityDiameter / 2));
                 Canvas.SetTop(cityEllipse, city.Y - (CityDiameter / 2));
+            }
 
-                if (i < pathToDraw.Count - 1)
+            if (tspSolver is not null && solverThread is not null)
+            {
+                List<int>? pathToDraw = solverThread.IsAlive ? tspSolver.LastTriedPath : tspSolver.CurrentBestPath;
+
+                for (int i = 0; i < pathToDraw.Count - 1; i++)
                 {
+                    Vector2 city = tspSolver.Cities[pathToDraw[i]];
                     // Do not run if we are at the last city
                     Vector2 nextCity = tspSolver.Cities[pathToDraw[i + 1]];
                     _ = cityCanvas.Children.Add(new Line()
@@ -83,6 +82,15 @@ namespace TravellingSalesmanProblem
                     });
                 }
             }
+        }
+
+        private void startButton_Click(object sender, RoutedEventArgs e)
+        {
+            tspSolver = new(Cities);
+
+            // Run TSP solver in background thread, with UI polling occasionally
+            solverThread = new(() => tspSolver.CalculateBestPath());
+            solverThread.Start();
         }
     }
 }
