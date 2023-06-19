@@ -72,13 +72,30 @@ namespace TravellingSalesmanProblem
 
             if (tspSolver is not null && solverThread is not null)
             {
-                List<int>? pathToDraw = solverThread.IsAlive ? tspSolver.LastTriedPath : tspSolver.CurrentBestPath;
-
-                for (int i = 0; i < pathToDraw.Count - 1; i++)
+                if (solverThread.IsAlive)
                 {
-                    Vector2 city = tspSolver.Cities[pathToDraw[i]];
+                    for (int i = 0; i < tspSolver.LastTriedPath.Count - 1; i++)
+                    {
+                        Vector2 city = tspSolver.Cities[tspSolver.LastTriedPath[i]];
+                        // Do not run if we are at the last city
+                        Vector2 nextCity = tspSolver.Cities[tspSolver.LastTriedPath[i + 1]];
+                        _ = cityCanvas.Children.Add(new Line()
+                        {
+                            StrokeThickness = 2,
+                            X1 = city.X,
+                            Y1 = city.Y,
+                            X2 = nextCity.X,
+                            Y2 = nextCity.Y,
+                            Stroke = Brushes.Black
+                        });
+                    }
+                }
+
+                for (int i = 0; i < tspSolver.CurrentBestPath.Count - 1; i++)
+                {
+                    Vector2 city = tspSolver.Cities[tspSolver.CurrentBestPath[i]];
                     // Do not run if we are at the last city
-                    Vector2 nextCity = tspSolver.Cities[pathToDraw[i + 1]];
+                    Vector2 nextCity = tspSolver.Cities[tspSolver.CurrentBestPath[i + 1]];
                     _ = cityCanvas.Children.Add(new Line()
                     {
                         StrokeThickness = 2,
@@ -86,7 +103,7 @@ namespace TravellingSalesmanProblem
                         Y1 = city.Y,
                         X2 = nextCity.X,
                         Y2 = nextCity.Y,
-                        Stroke = solverThread.IsAlive ? Brushes.Black : Brushes.Green
+                        Stroke = solverThread.IsAlive ? Brushes.Red : Brushes.Green
                     });
                 }
             }
