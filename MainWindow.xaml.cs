@@ -51,14 +51,11 @@ namespace TravellingSalesmanProblem
         {
             cityCanvas.Children.Clear();
 
-            if (!solverThread.IsAlive)
-            {
-                System.Diagnostics.Debug.WriteLine("Done!");
-            }
+            List<int> pathToDraw = solverThread.IsAlive ? tspSolver.LastTriedPath : tspSolver.CurrentBestPath;
 
-            for (int i = 0; i < tspSolver.LastTriedPath.Count - 1; i++)
+            for (int i = 0; i < pathToDraw.Count; i++)
             {
-                Vector2 city = tspSolver.Cities[tspSolver.LastTriedPath[i]];
+                Vector2 city = tspSolver.Cities[pathToDraw[i]];
 
                 Ellipse cityEllipse = new()
                 {
@@ -70,16 +67,20 @@ namespace TravellingSalesmanProblem
                 Canvas.SetLeft(cityEllipse, city.X - (CityDiameter / 2));
                 Canvas.SetTop(cityEllipse, city.Y - (CityDiameter / 2));
 
-                Vector2 nextCity = tspSolver.Cities[tspSolver.LastTriedPath[i + 1]];
-                _ = cityCanvas.Children.Add(new Line()
+                if (i < pathToDraw.Count - 1)
                 {
-                    StrokeThickness = 2,
-                    X1 = city.X,
-                    Y1 = city.Y,
-                    X2 = nextCity.X,
-                    Y2 = nextCity.Y,
-                    Stroke = Brushes.Black
-                });
+                    // Do not run if we are at the last city
+                    Vector2 nextCity = tspSolver.Cities[pathToDraw[i + 1]];
+                    _ = cityCanvas.Children.Add(new Line()
+                    {
+                        StrokeThickness = 2,
+                        X1 = city.X,
+                        Y1 = city.Y,
+                        X2 = nextCity.X,
+                        Y2 = nextCity.Y,
+                        Stroke = Brushes.Black
+                    });
+                }
             }
         }
     }
