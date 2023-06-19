@@ -28,6 +28,11 @@ namespace TravellingSalesmanProblem
 
         public List<int> CalculateBestPath(CancellationToken cancellationToken)
         {
+            if (Cities.Count == 0)
+            {
+                return new List<int>();
+            }
+
             IEnumerable<int> cityIndices = Enumerable.Range(1, Cities.Count - 1);
 
             IterationStopwatch.Start();

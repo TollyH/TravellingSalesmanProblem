@@ -6,6 +6,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -26,20 +27,12 @@ namespace TravellingSalesmanProblem
 
         private CancellationTokenSource? cancellationTokenSource;
 
-        private int permutationCount;
+        private int permutationCount = 0;
 
         private Stopwatch stopwatch = Stopwatch.StartNew();
 
         public MainWindow()
         {
-            Random rng = new();
-            Cities.Clear();
-            for (int i = 0; i < 12; i++)
-            {
-                Cities.Add(new Vector2(rng.Next(0, 400), rng.Next(0, 400)));
-            }
-            permutationCount = Permutations.PermutationsCount(Cities.Count);
-
             canvasUpdateTimer = new System.Timers.Timer();
             canvasUpdateTimer.Elapsed += CanvasUpdateTimer_Elapsed;
 
@@ -121,6 +114,25 @@ namespace TravellingSalesmanProblem
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
             cancellationTokenSource?.Cancel();
+        }
+
+        private void cityCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (solverThread is not null && solverThread.IsAlive)
+            {
+                return;
+            }
+
+            Point pos = Mouse.GetPosition(cityCanvas);
+            Cities.Add(new Vector2((float)pos.X, (float)pos.Y));
+            permutationCount = Permutations.PermutationsCount(Cities.Count);
+        }
+
+        private void clearButton_Click(object sender, RoutedEventArgs e)
+        {
+            cancellationTokenSource?.Cancel();
+            Cities.Clear();
+            permutationCount = 0;
         }
     }
 }

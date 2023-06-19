@@ -12,11 +12,12 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray">
-            <Canvas Width="450" Height="450" x:Name="cityCanvas"/>
+            <Canvas Width="450" Height="450" x:Name="cityCanvas" MouseDown="cityCanvas_MouseDown" Background="Transparent"/>
         </Border>
         <StackPanel Grid.Column="1">
             <Button Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="startButton" Content="Start" Margin="10,10,10,5" Click="startButton_Click"/>
             <Button Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="stopButton" Content="Stop" Margin="10,5,10,5" Click="stopButton_Click"/>
+            <Button Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="clearButton" Content="Clear" Margin="10,5,10,5" Click="clearButton_Click"/>
             <TextBlock x:Name="statsLabel" VerticalAlignment="Top" HorizontalAlignment="Center" Text="XXX" Margin="10,5,10,5" TextAlignment="Center"/>
             <Label VerticalAlignment="Top" Content="Frame Delay:" Margin="10,5,10,2" Padding="0"/>
             <Slider x:Name="frameDelaySlider" VerticalAlignment="Top" Value="16.67" Minimum="3" Maximum="100" SmallChange="0.01" LargeChange="1" Margin="10,2,10,10" AutoToolTipPlacement="BottomRight"/>
