@@ -13,10 +13,11 @@ namespace TravellingSalesmanProblem
             }
             else
             {
+                List<T> list = sequence.ToList();
                 int index = 0;
-                foreach (T startItem in sequence)
+                foreach (T startItem in list)
                 {
-                    IEnumerable<T> remainingItems = sequence.Where((_, i) => i != index);
+                    IEnumerable<T> remainingItems = list.Where((_, i) => i != index);
                     foreach (IEnumerable<T> permutation in remainingItems.IteratePermutations())
                     {
                         yield return permutation.Prepend(startItem);
