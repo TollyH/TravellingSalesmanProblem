@@ -14,6 +14,7 @@ namespace TravellingSalesmanProblem
         public float CurrentBestDistance { get; private set; } = float.PositiveInfinity;
 
         public int TriedPaths { get; private set; } = 0;
+        public int Improvements { get; private set; } = 0;
 
         public Stopwatch IterationStopwatch { get; private set; } = new();
 
@@ -55,6 +56,7 @@ namespace TravellingSalesmanProblem
                 {
                     CurrentBestPath = pathList;
                     CurrentBestDistance = distance;
+                    Improvements++;
                 }
             }
             IterationStopwatch.Stop();

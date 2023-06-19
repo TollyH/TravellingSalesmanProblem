@@ -95,9 +95,13 @@ namespace TravellingSalesmanProblem
         public void UpdateStats()
         {
             int triedPaths = tspSolver?.TriedPaths ?? 0;
+            double averagePathsPerSecond = triedPaths * 1000d / tspSolver?.IterationStopwatch.ElapsedMilliseconds ?? 0;
+
             statsLabel.Text = $"Tried Paths: {triedPaths}/{permutationCount} ({(float)triedPaths / permutationCount * 100:0.0}%)" +
+                $"\nImprovements: {tspSolver?.Improvements ?? 0}" +
                 $"\nDisplay Frame Delay: {stopwatch.ElapsedMilliseconds}ms ({1000d / stopwatch.ElapsedMilliseconds:0.0} FPS)" +
-                $"\nAverage Paths Per Second: {triedPaths * 1000d / tspSolver?.IterationStopwatch.ElapsedMilliseconds ?? 0:0.00}";
+                $"\nAverage Paths Per Second: {averagePathsPerSecond:0.00}" +
+                $"\nEstimated Remaining Seconds: {(permutationCount - triedPaths) / averagePathsPerSecond:0.0}";
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
@@ -131,6 +135,8 @@ namespace TravellingSalesmanProblem
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             cancellationTokenSource?.Cancel();
+            tspSolver = null;
+            solverThread = null;
             Cities.Clear();
             permutationCount = 0;
         }
