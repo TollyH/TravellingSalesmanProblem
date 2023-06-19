@@ -25,8 +25,8 @@ namespace TravellingSalesmanProblem
         public MainWindow()
         {
             Random rng = new();
-            List<Vector2> randomCities = new(20);
-            for (int i = 0; i < 20; i++)
+            List<Vector2> randomCities = new(11);
+            for (int i = 0; i < 11; i++)
             {
                 randomCities.Add(new Vector2(rng.Next(0, 400), rng.Next(0, 400)));
             }
