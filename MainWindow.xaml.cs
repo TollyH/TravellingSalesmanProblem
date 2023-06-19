@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
@@ -72,6 +71,22 @@ namespace TravellingSalesmanProblem
 
             if (tspSolver is not null && solverThread is not null)
             {
+                for (int i = 0; i < tspSolver.CurrentBestPath.Count - 1; i++)
+                {
+                    Vector2 city = tspSolver.Cities[tspSolver.CurrentBestPath[i]];
+                    // Do not run if we are at the last city
+                    Vector2 nextCity = tspSolver.Cities[tspSolver.CurrentBestPath[i + 1]];
+                    _ = cityCanvas.Children.Add(new Line()
+                    {
+                        StrokeThickness = 4,
+                        X1 = city.X,
+                        Y1 = city.Y,
+                        X2 = nextCity.X,
+                        Y2 = nextCity.Y,
+                        Stroke = solverThread.IsAlive ? Brushes.Red : Brushes.Green
+                    });
+                }
+
                 if (solverThread.IsAlive)
                 {
                     for (int i = 0; i < tspSolver.LastTriedPath.Count - 1; i++)
@@ -86,25 +101,9 @@ namespace TravellingSalesmanProblem
                             Y1 = city.Y,
                             X2 = nextCity.X,
                             Y2 = nextCity.Y,
-                            Stroke = Brushes.Black
+                            Stroke = new SolidColorBrush(Colors.Black)
                         });
                     }
-                }
-
-                for (int i = 0; i < tspSolver.CurrentBestPath.Count - 1; i++)
-                {
-                    Vector2 city = tspSolver.Cities[tspSolver.CurrentBestPath[i]];
-                    // Do not run if we are at the last city
-                    Vector2 nextCity = tspSolver.Cities[tspSolver.CurrentBestPath[i + 1]];
-                    _ = cityCanvas.Children.Add(new Line()
-                    {
-                        StrokeThickness = 2,
-                        X1 = city.X,
-                        Y1 = city.Y,
-                        X2 = nextCity.X,
-                        Y2 = nextCity.Y,
-                        Stroke = solverThread.IsAlive ? Brushes.Red : Brushes.Green
-                    });
                 }
             }
         }
