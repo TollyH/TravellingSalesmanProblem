@@ -16,6 +16,7 @@ namespace TravellingSalesmanProblem
     public partial class MainWindow : Window
     {
         public float CityDiameter { get; set; } = 10;
+        public double FrameDelay { get; set; } = 16.67;
 
         private readonly Solver tspSolver;
         private readonly System.Timers.Timer canvasUpdateTimer;
@@ -31,7 +32,7 @@ namespace TravellingSalesmanProblem
             }
 
             tspSolver = new(randomCities);
-            canvasUpdateTimer = new System.Timers.Timer(66);
+            canvasUpdateTimer = new System.Timers.Timer(FrameDelay);
             canvasUpdateTimer.Elapsed += CanvasUpdateTimer_Elapsed;
 
             InitializeComponent();
