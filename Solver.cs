@@ -70,8 +70,7 @@ namespace TravellingSalesmanProblem
             float distance = 0;
             for (int i = 1; i < pathList.Count; i++)
             {
-                // .LengthSquared is faster than .Length whilst still being enough to find the shortest path
-                distance += (pathList[i] - pathList[i - 1]).LengthSquared();
+                distance += (pathList[i] - pathList[i - 1]).Length();
             }
             return distance;
         }
