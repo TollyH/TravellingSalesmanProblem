@@ -17,5 +17,7 @@
         <Button Grid.Column="1" Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="startButton" Content="Start" Margin="10" Click="startButton_Click"/>
         <Button Grid.Column="1" Padding="15,1,15,1" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="stopButton" Content="Stop" Margin="10,40,10,10" Click="stopButton_Click"/>
         <Label x:Name="statsLabel" Grid.Column="1" VerticalAlignment="Top" Content="Tried Paths: XXXXXX/XXXXXX (XXX.X%)" Margin="0,70,0,0"/>
+        <Label Grid.Column="1" VerticalAlignment="Top" Content="Frame Delay:" Margin="0,100,0,0"/>
+        <Slider x:Name="frameDelaySlider" Grid.Column="1" VerticalAlignment="Top" Value="16.67" Minimum="3" Maximum="100" SmallChange="0.01" LargeChange="1" Margin="10,125,10,10" AutoToolTipPlacement="BottomRight"/>
     </Grid>
 </Window>

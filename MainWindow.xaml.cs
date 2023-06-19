@@ -16,7 +16,6 @@ namespace TravellingSalesmanProblem
     public partial class MainWindow : Window
     {
         public float CityDiameter { get; set; } = 10;
-        public double FrameDelay { get; set; } = 16.67;
 
         public List<Vector2> Cities { get; set; } = new();
 
@@ -38,10 +37,11 @@ namespace TravellingSalesmanProblem
             }
             permutationCount = Permutations.PermutationsCount(Cities.Count);
 
-            canvasUpdateTimer = new System.Timers.Timer(FrameDelay);
+            canvasUpdateTimer = new System.Timers.Timer();
             canvasUpdateTimer.Elapsed += CanvasUpdateTimer_Elapsed;
 
             InitializeComponent();
+
             canvasUpdateTimer.Start();
         }
 
@@ -49,6 +49,7 @@ namespace TravellingSalesmanProblem
         {
             Dispatcher.Invoke(() =>
             {
+                canvasUpdateTimer.Interval = frameDelaySlider.Value;
                 UpdateCanvas();
                 UpdateStats();
             });
