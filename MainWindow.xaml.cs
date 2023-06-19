@@ -96,5 +96,10 @@ namespace TravellingSalesmanProblem
             solverThread = new(() => tspSolver.CalculateBestPath(cancellationTokenSource.Token));
             solverThread.Start();
         }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            cancellationTokenSource?.Cancel();
+        }
     }
 }
