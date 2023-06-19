@@ -103,7 +103,8 @@ namespace TravellingSalesmanProblem
         {
             int triedPaths = tspSolver?.TriedPaths ?? 0;
             statsLabel.Text = $"Tried Paths: {triedPaths}/{permutationCount} ({(float)triedPaths / permutationCount * 100:0.0}%)" +
-                $"\nDisplay Frame Delay: {stopwatch.Elapsed.TotalMilliseconds:0.00}ms ({1 / stopwatch.Elapsed.TotalSeconds:0.0} FPS)";
+                $"\nDisplay Frame Delay: {stopwatch.ElapsedMilliseconds}ms ({1000d / stopwatch.ElapsedMilliseconds:0.0} FPS)" +
+                $"\nAverage Paths Per Second: {triedPaths * 1000d / tspSolver?.IterationStopwatch.ElapsedMilliseconds ?? 0:0.00}";
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
@@ -14,6 +15,8 @@ namespace TravellingSalesmanProblem
 
         public int TriedPaths { get; private set; } = 0;
 
+        public Stopwatch IterationStopwatch { get; private set; } = new();
+
         public Solver(IEnumerable<Vector2> cities)
         {
             // Create a copy of the list given as a parameter
@@ -27,6 +30,7 @@ namespace TravellingSalesmanProblem
         {
             IEnumerable<int> cityIndices = Enumerable.Range(1, Cities.Count - 1);
 
+            IterationStopwatch.Start();
             foreach (IEnumerable<int> path in cityIndices.IteratePermutations())
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -48,6 +52,7 @@ namespace TravellingSalesmanProblem
                     CurrentBestDistance = distance;
                 }
             }
+            IterationStopwatch.Stop();
 
             return CurrentBestPath;
         }
